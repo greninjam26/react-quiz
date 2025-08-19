@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 const QuizContext = createContext();
 const SECONDS_PER_QUESTION = 30;
@@ -72,6 +72,16 @@ function QuizProvider({ children }) {
 
 	const numQuestions = questions.length;
 	const totalPoints = questions.reduce((sum, question) => (sum += question.points), 0);
+
+	useEffect(
+		function () {
+			fetch("http://localhost:8000/questions")
+				.then(resp => resp.json())
+				.then(data => dispatch({ type: "dataRecived", payLoad: data }))
+				.catch(err => dispatch({ type: "dataFailed" }));
+		},
+		[dispatch]
+	);
 
 	return (
 		<QuizContext.Provider

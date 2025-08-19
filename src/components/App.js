@@ -1,5 +1,4 @@
 // import DateCounter from "./DateCounter";
-import { useEffect } from "react";
 
 import Header from "./Header";
 import Main from "./Main";
@@ -15,17 +14,7 @@ import Timer from "./Timer";
 import { useQuiz } from "../context/QuizContext";
 
 export default function App() {
-	const { status, dispatch } = useQuiz();
-
-	useEffect(
-		function () {
-			fetch("http://localhost:8000/questions")
-				.then(resp => resp.json())
-				.then(data => dispatch({ type: "dataRecived", payLoad: data }))
-				.catch(err => dispatch({ type: "dataFailed" }));
-		},
-		[dispatch]
-	);
+	const { status } = useQuiz();
 
 	return (
 		<div className="app">
